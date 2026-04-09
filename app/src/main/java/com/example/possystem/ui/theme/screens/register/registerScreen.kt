@@ -5,13 +5,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,7 +25,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,32 +38,28 @@ import com.example.possystem.R
 import com.example.possystem.data.AuthViewModel
 import com.example.possystem.navigation.ROUTE_LOGIN
 
-
-// --- Color Palette from Design ---
 val DeepSpaceBlue = Color(0xFF02093D)
 val DarkNavyCard = Color(0xFF0B1736)
 val ElectricCyan = Color(0xFF00C8E1)
 val DeepSkyBlue = Color(0xFF007DFE)
 val DimGray = Color(0xFF717D96)
 
-
 @Composable
 fun RegisterScreen(navController: NavController) {
     var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
+    var phone by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
-    val authViewModel: AuthViewModel= viewModel()
+    val authViewModel: AuthViewModel = viewModel()
     val context = LocalContext.current
 
-    // Full screen background
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(DeepSpaceBlue),
         contentAlignment = Alignment.Center
     ) {
-        // Main Card Container
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -69,14 +70,14 @@ fun RegisterScreen(navController: NavController) {
             Column(
                 modifier = Modifier
                     .padding(vertical = 32.dp, horizontal = 20.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Airplane Icon Header
                 Surface(
                     modifier = Modifier.size(56.dp),
                     shape = CircleShape,
-                    color = Color(0xFF162544) // Slightly lighter navy for icon circle
+                    color = Color(0xFF162544)
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.logo),
@@ -86,7 +87,6 @@ fun RegisterScreen(navController: NavController) {
                             .clip(CircleShape)
                             .border(2.dp, Color.White, CircleShape)
                             .shadow(4.dp, CircleShape)
-
                     )
                 }
 
@@ -106,7 +106,6 @@ fun RegisterScreen(navController: NavController) {
                     modifier = Modifier.padding(top = 4.dp, bottom = 24.dp)
                 )
 
-                // Input Fields Styling
                 val fieldColors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = ElectricCyan,
                     unfocusedBorderColor = DimGray.copy(alpha = 0.3f),
@@ -118,6 +117,7 @@ fun RegisterScreen(navController: NavController) {
                     unfocusedLeadingIconColor = DimGray
                 )
 
+                // Username
                 OutlinedTextField(
                     value = username,
                     onValueChange = { username = it },
@@ -130,18 +130,35 @@ fun RegisterScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(12.dp))
 
+                // Email
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text("pilot@example.com") },
+                    label = { Text("Email") },
                     leadingIcon = { Icon(Icons.Outlined.Email, null) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = fieldColors,
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(12.dp),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
 
+                // Phone
+                OutlinedTextField(
+                    value = phone,
+                    onValueChange = { phone = it },
+                    label = { Text("Phone Number") },
+                    leadingIcon = { Icon(Icons.Outlined.Phone, null) },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = fieldColors,
+                    shape = RoundedCornerShape(12.dp),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // Password
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
@@ -155,6 +172,7 @@ fun RegisterScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(12.dp))
 
+                // Confirm Password
                 OutlinedTextField(
                     value = confirmPassword,
                     onValueChange = { confirmPassword = it },
@@ -168,15 +186,18 @@ fun RegisterScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                // Register Button
                 Button(
-                    onClick = { authViewModel.signup(
-                        username=username,
-                        email=email,
-                        password=password,
-                        confirmpassword=confirmPassword,
-                        navController=navController,
-                        context = context) },
+                    onClick = {
+                        authViewModel.signup(
+                            username = username,
+                            email = email,
+                            phone = phone,
+                            password = password,
+                            confirmpassword = confirmPassword,
+                            navController = navController,
+                            context = context
+                        )
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
@@ -188,7 +209,6 @@ fun RegisterScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Footer Text
                 Row {
                     Text("Already have an account? ", color = DimGray, fontSize = 14.sp)
                     Text(
@@ -207,7 +227,5 @@ fun RegisterScreen(navController: NavController) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun RegisterScreenPreview() {
-
-        RegisterScreen(navController = rememberNavController())
-
+    RegisterScreen(navController = rememberNavController())
 }

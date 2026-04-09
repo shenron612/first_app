@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.platform.LocalContext
+import com.example.possystem.data.AuthViewModel
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
@@ -43,6 +46,8 @@ val DimGray = Color(0xFF717D96)
 fun LoginScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val authViewModel: AuthViewModel = viewModel()
+    val context = LocalContext.current
 
     // Full screen background
     Box(
@@ -141,7 +146,14 @@ fun LoginScreen(navController: NavController) {
 
                 // Register Button
                 Button(
-                    onClick = { /* TODO: Login Action */ },
+                    onClick = {
+                        authViewModel.login(
+                            email = email,
+                            password = password,
+                            navController = navController,
+                            context = context
+                        )
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),

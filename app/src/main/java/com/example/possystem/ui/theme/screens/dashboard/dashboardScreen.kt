@@ -44,12 +44,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.possystem.data.AuthViewModel
 import com.example.possystem.navigation.ROUTE_LOGIN
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,6 +60,8 @@ import com.example.possystem.navigation.ROUTE_LOGIN
 fun Dashboard(navController: NavController) {
     // 1. Fixed logic: selectedItem state should track the actual index clicked
     var selectedItem by remember { mutableStateOf(0) }
+    val authViewModel: AuthViewModel = viewModel()
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -69,7 +74,12 @@ fun Dashboard(navController: NavController) {
                     )
                 },
                 actions = {
-                    IconButton(onClick = { navController.navigate(ROUTE_LOGIN) }) {
+                    IconButton(onClick = {
+                        authViewModel.logout(
+                            navController = navController,
+                            context = context
+                        )
+                    }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.Logout,
                             contentDescription = "Logout",
