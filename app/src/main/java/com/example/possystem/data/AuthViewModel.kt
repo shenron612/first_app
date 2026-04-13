@@ -68,7 +68,7 @@ class AuthViewModel : ViewModel() {
         val dbRef = FirebaseDatabase.getInstance().getReference("Users/${user.userId}")
         dbRef.setValue(user).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Toast.makeText(context, "Account created successfully", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Registration Successful", Toast.LENGTH_LONG).show()
                 navController.navigate(ROUTE_LOGIN) {
                     popUpTo(0)
                 }

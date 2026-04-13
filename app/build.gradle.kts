@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.androidx.navigation.compose)
     implementation("androidx.compose.material:material-icons-extended")
+    implementation("io.coil-kt:coil-compose:2.0.0")
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
     implementation(libs.androidx.material3)
