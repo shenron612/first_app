@@ -17,16 +17,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
+import com.example.possystem.data.ProductViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddProductScreen() {
+fun AddProductScreen(navController: NavController) {
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     var productName by remember { mutableStateOf("") }
     var price by remember { mutableStateOf("") }
@@ -38,6 +43,8 @@ fun AddProductScreen() {
     ) { uri: Uri? ->
         imageUri = uri
     }
+    var productViewModel: ProductViewModel = viewModel()
+    var context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -61,7 +68,6 @@ fun AddProductScreen() {
         ) {
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Image picker box
             Box(
                 modifier = Modifier.size(120.dp),
                 contentAlignment = Alignment.Center
@@ -94,7 +100,6 @@ fun AddProductScreen() {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Product Name
             OutlinedTextField(
                 value = productName,
                 onValueChange = { productName = it },
@@ -106,7 +111,6 @@ fun AddProductScreen() {
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Price
             OutlinedTextField(
                 value = price,
                 onValueChange = { price = it },
@@ -119,7 +123,6 @@ fun AddProductScreen() {
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Quantity
             OutlinedTextField(
                 value = quantity,
                 onValueChange = { quantity = it },
@@ -132,7 +135,6 @@ fun AddProductScreen() {
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Description
             OutlinedTextField(
                 value = description,
                 onValueChange = { description = it },
@@ -146,9 +148,16 @@ fun AddProductScreen() {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Save Button
             Button(
-                onClick = { /* TODO: save product */ },
+                onClick = {
+                    productViewModel.uploadProduct(
+                        imageUri,
+                        productName,
+                        price,
+                        quantity,
+                        description,
+                        context,
+                        navController )},
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(52.dp),
@@ -170,5 +179,5 @@ fun AddProductScreen() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun AddProductScreenPreview() {
-    AddProductScreen()
+    AddProductScreen(rememberNavController())
 }
