@@ -29,7 +29,7 @@ class ProductViewModel:ViewModel() {
     val cloudinaryUrl = "https://api.cloudinary.com/v1_1/dkq3txb6h/image/upload"
     val uploadPreset = "first_app"
 
-    fun uploadProduct(imageUri: Uri?,productName:String,price:String,quantity:String,description:String,
+    fun uploadProduct(imageUri: Uri?,productName:String,price:String,quantity:String,description:String,dateManufacture:String,barcodeNumber:String,
                       context: Context,navController: NavController){
 
         viewModelScope.launch (Dispatchers.IO){
@@ -42,6 +42,8 @@ class ProductViewModel:ViewModel() {
                     "price" to price,
                     "quantity" to quantity,
                     "description" to description,
+                    "dateManufacture" to dateManufacture,
+                    "barcodeNumber" to barcodeNumber,
                     "imageUrl" to imageUrl
                 )
                 ref.setValue(productData).await()

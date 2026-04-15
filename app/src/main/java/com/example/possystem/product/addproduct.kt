@@ -37,6 +37,8 @@ fun AddProductScreen(navController: NavController) {
     var price by remember { mutableStateOf("") }
     var quantity by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
+    var dateManufacture by remember { mutableStateOf("") }
+    var barcodeNumber by remember { mutableStateOf("") }
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
@@ -148,6 +150,30 @@ fun AddProductScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            OutlinedTextField(
+                value = dateManufacture,
+                onValueChange = { dateManufacture = it },
+                label = { Text("DateManufacture") },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            OutlinedTextField(
+                value = barcodeNumber,
+                onValueChange = { barcodeNumber = it },
+                label = { Text("BarcodeNumber") },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
             Button(
                 onClick = {
                     productViewModel.uploadProduct(
@@ -156,6 +182,8 @@ fun AddProductScreen(navController: NavController) {
                         price,
                         quantity,
                         description,
+                        dateManufacture,
+                        barcodeNumber,
                         context,
                         navController )},
                 modifier = Modifier
