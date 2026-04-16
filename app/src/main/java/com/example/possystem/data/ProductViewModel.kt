@@ -9,6 +9,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.example.possystem.models.ProductModel
 import com.example.possystem.navigation.ROUTE_DASHBOARD
 
 
@@ -77,6 +78,23 @@ class ProductViewModel:ViewModel() {
         return secureUrl ?: throw Exception("Failed to get image URL")
     }
 
+    private val _products = mutableStateListOf<ProductModel>()
+    val products: List<ProductModel> = _products
+    fun fetchProduct(context: Context){
+        val ref = FirebaseDatabase.getInstance().getReference("Products")
+        ref.get().addOnSuccessListener { snapshot ->
+            _products.clear()
+            for (child in snapshot.children){
+                val product = child.getValue(ProductModel::class.java)
+                product?.let{
+                    it.id = child.key
+                    _products.add(it)
+                }
+                }}.addOnFailureListener{
+            Toast.makeText(context,"Failed to load products",Toast.LENGTH_LONG).show()
+        }
+
+    }
 
 
 
