@@ -27,6 +27,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
+import com.example.possystem.data.AuthViewModel
 import com.example.possystem.data.ProductViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,7 +48,7 @@ fun AddProductScreen(navController: NavController) {
     }
     var productViewModel: ProductViewModel = viewModel()
     var context = LocalContext.current
-
+    val authViewModel: AuthViewModel = viewModel()
     Scaffold(
         topBar = {
             TopAppBar(

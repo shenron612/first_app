@@ -14,6 +14,10 @@ class AuthViewModel : ViewModel() {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
+    fun isUserLoggedIn(): Boolean {
+        return auth.currentUser != null
+    }
+
     fun signup(
         username: String,
         email: String,

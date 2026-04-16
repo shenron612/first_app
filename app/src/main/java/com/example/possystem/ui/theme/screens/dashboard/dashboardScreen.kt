@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -53,7 +54,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.possystem.data.AuthViewModel
+import com.example.possystem.navigation.ROUTE_ADD_PRODUCT
 import com.example.possystem.navigation.ROUTE_LOGIN
+import com.example.possystem.navigation.ROUTE_VIEW_PRODUCT
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -158,7 +161,10 @@ fun Dashboard(navController: NavController) {
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Card(
-                    modifier = Modifier.weight(1f).height(120.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(120.dp)
+                        .clickable { navController.navigate(ROUTE_ADD_PRODUCT) },
                     shape = RoundedCornerShape(20.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.Magenta)
                 ) {
@@ -171,7 +177,10 @@ fun Dashboard(navController: NavController) {
                     }
                 }
                 Card(
-                    modifier = Modifier.weight(1f).height(120.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(120.dp)
+                        .clickable { navController.navigate(ROUTE_VIEW_PRODUCT) },
                     shape = RoundedCornerShape(20.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.Magenta)
                 ) {

@@ -9,5 +9,4 @@ data class ProductModel(
     var dateManufacture: String?=null,
     var barcodeNumber: String?=null,
     var imageUrl: String?=null,
-
 )
